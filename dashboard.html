@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+<head
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="60">
+
+<title>Engineering Kaizen Dashboard</title>
+
+
+
+<style>
+
+    
+
+*{
+    box-sizing:border-box;
+}
+html
+body{
+    margin:0;
+    background:#102f76;
+    font-family:Segoe UI, Arial, sans-serif;
+    color:white;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+    
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0px 40px;
+}
+
+.logo{
+    background:white;
+    color:#102f76;
+    width:420px;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    font-weight:bold;
+}
+
+.target-box{
+    font-size:35px;
+    font-weight:600;
+
+}
+
+.target-box{
+   margin-left:0px;
+    margin-bottom:0;
+
+}
+
+.target-box .actual{
+    font-size:58px;
+    color:white;
+}
+
+.target-box .target{
+    font-size:58px;
+    color:#9ffeff;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:25px;
+    padding:20px 40px;
+    min-height:calc(100vh - 140px);
+}
+
+.sidebar{
+
+    background:#2c58b5;
+    border-radius:30px;
+    padding:50px;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:top;
+    gap:20px;
+    justify-content:space-between;
+
+}
+
+.dashboard-title{
+    font-size:40px;
+    line-height:1.4;
+    font-weight:;
+}
+
+.dashboard-title span{
+    color:#9ffeff;
+}
+
+.info-box{
+    text-align:center;
+    margin-top:50px;
+}
+
+.info-box h3{
+    color:#00ff99;
+    font-size:24px;
+}
+
+.info-box .value{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.card-area{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(250px,1fr));
+    gap:15px;
+    margin-bottom:0;
+}
+.card{
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    transition:0.3s;
+}
+
+.card{
+    background:#2c58b5;
+    border-radius:20px;
+    padding:20px;
+    height:160px;
+    position:relative;
+    box-shadow:0px 6px 12px rgba(0,0,0,0.4);
+}
+
+.card h2{
+    margin:0 0 20px 0;
+    font-size:22px;
+    font-weight:500;
+}
+
+.actual-saving{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.target-saving{
+    font-size:20px;
+    color:#9ffeff;
+}
+
+.percent{
+    position:absolute;
+    right:30px;
+    bottom:40px;
+
+    width:70px;
+    height:70px;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:21px;
+    font-weight:bold;
+    color:white;
+
+    background:
+        conic-gradient(
+            white var(--percent),
+            rgba(255,255,255,0.15) 0
+        );
+}
+
+.percent::before{
+    content:"";
+    position:absolute;
+
+    width:52px;
+    height:52px;
+
+    background:#2c58b5;
+    border-radius:50%;
+}
+
+.percent span{
+    position:relative;
+    z-index:1;
+}
+
+.footer{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.kpi-card{
+    background:#2c58b5;
+    text-align:center;
+    border-radius:15px;
+    padding:20px;
+}
+
+.kpi-card h3{
+    margin:0;
+    font-size:18px;
+}
+
+.kpi-card .number{
+    margin-top:5px;
+    font-size:36px;
+    color:#9ffeff;
+    font-weight:bold;
+}
+.detail-panel{
+    width:100%;
+    margin-top:0px;
+    max-height:350px;
+    overflow-y:auto;
+}
+
+.detail-panel table{
+    width:100%;
+    border-collapse:collapse;
+    color:white;
+}
+
+.detail-panel th{
+    border:1px solid white;
+    color:white} 
+.detail-panel td{
+    border:1px solid white;
+    padding:5px;
+    text-align:center;
+    color:#ffd700;
+}
+
+.detail-panel td:first-child{
+    text-align:left;
+}
+
+.detail-panel th{
+    background:#244a9b;
+}
+.detail-panel{
+    width:100%;
+    margin-top:0px;
+    grid-column:1 / -1;
+}
+.participate{
+    text-align:center;
+}
+.detail-panel{
+    width:100%;
+    margin-top:20px;
+}
+
+.detail-panel table{
+    width:100%;
+}
+.card.active{
+    background:#4CAF50; /* Green */
+    border:3px solid white;
+}
+
+</style>
+</head>
+
+<body>
+
+    
+
+<div class="header">
+
+<div class="target-box">
+
+<img src="https://sixsigmaonlinetraining.com.au/wp-content/uploads/2016/09/ESCATEC-logo1.jpg" alt="Escatec Logo" width="440" style="margin-right:120px;">
+
+
+Saving per Year
+
+
+<span class="actual">RM 1,017,356</span>
+
+/
+
+<span class="target">RM 3,170,000</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+
+
+
+<div class="dashboard-title">
+
+<img src="" width="100" style="margin-right:200px;">
+
+Engineering Kaizen Progress <br>
+
+<span>DASHBOARD</span>
+
+</div>
+
+<div class="info-box">
+
+</div>
+
+</div>
+
+<div>
+
+<div class="card-area">
+
+<div class="card"
+     onclick="showDepartment('Automation',this)">
+<h2>Automation</h2>
+<div class="actual-saving" id="automationSaving">
+    Loading...
+</div>
+<!-- Automation -->
+<div class="target-saving" id="automationTarget">Loading...</div>
+<div class="percent" id="automationPercent">
+    <span>0%</span>
+</div>
+
+</div>
+
+<div class="card"
+     onclick="showDepartment('Component',this)">
+<h2>Component</h2>
+<!-- Component -->
+<div class="actual-saving" id="componentSaving">Loading...</div>
+<!-- Component -->
+<div class="target-saving" id="componentTarget">Loading...</div>
+<div class="percent" id="componentPercent">
+    <span>0%</span>
+</div>
+</div>
+
+<div class="card"
+onclick="showDepartment('Failure Analysis',this)">
+<h2>Failure Analysis</h2>
+<!-- Failure Analysis -->
+<div class="actual-saving" id="faSaving">Loading...</div>
+<!-- Component -->
+<div class="target-saving" id="faTarget">Loading...</div>
+<div class="percent" id="faPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="card"onclick="showDepartment('Process',this)">
+<h2>Process</h2>
+<!-- Process -->
+<div class="actual-saving" id="processSaving">Loading...</div>
+<!-- process -->
+<div class="target-saving" id="processTarget">Loading...</div>
+<div class="percent" id="processPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="card"onclick="showDepartment('Product',this)">
+<h2>Product</h2>
+<!-- Product -->
+<div class="actual-saving" id="productSaving">Loading...</div>
+<!-- testDev -->
+<div class="target-saving" id="productTarget">Loading...</div>
+<div class="percent" id="productPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="card" onclick="showDepartment('System & Documentation',this)">
+<h2>System & Documentation</h2>
+<!-- System & Documentation -->
+<div class="actual-saving" id="systemSaving">Loading...</div>
+<!-- system -->
+<div class="target-saving" id="systemTarget">Loading...</div>
+<div class="percent" id="systemPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="card" onclick="showDepartment('Test',this)">
+<h2>Test</h2>
+<!-- Test -->
+<div class="actual-saving" id="testSaving">Loading...</div>
+<!-- test -->
+<div class="target-saving" id="testTarget">Loading...</div>
+<div class="percent" id="testPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="card" onclick="showDepartment('Test Development',this)">
+<h2>Test Development</h2>
+<!-- Test Development -->
+<div class="actual-saving" id="testDevSaving">Loading...</div>
+<!-- testDev -->
+<div class="target-saving" id="testDevTarget">Loading...</div>
+<div class="percent" id="testDevPercent">
+    <span>0%</span></div>
+</div>
+
+<div class="detail-panel">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Position</th>
+                <th>Individual Saving</th>
+                <th>Project Participate</th>
+                <th>KPI Completed</th>
+            </tr>
+        </thead>
+
+        <tbody id="detailTableBody">
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+let employeeRows = [];
+
+</script>
+
+<script>
+fetch("Dashboard.csv")
+.then(response => response.text())
+.then(csv => {employeeRows = csv.split('\n');
+
+    const rows = csv.split('\n');
+
+    rows.forEach(row => {
+
+        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+        if (!cols) return;
+
+        const dept = cols[0].trim();
+        const saving = cols[1]?.replace(/"/g,'');
+        const target = cols[2]?.replace(/"/g,'');
+        const savingValue =
+         parseFloat(saving.replace(/[RM,]/g,'')) || 0;
+
+         const targetValue =
+         parseFloat(target.replace(/[RM,]/g,'')) || 0;
+
+        const percent =
+    targetValue > 0
+    ? Math.round((savingValue / targetValue) * 100)
+    : 0;
+
+        if (dept === "Automation") {
+
+    document.getElementById("automationSaving").textContent = saving;
+    document.getElementById("automationTarget").textContent = target;
+
+    const percentElement =
+        document.getElementById("automationPercent");
+
+    percentElement.querySelector("span").textContent =
+    percent + "%";
+
+    percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "Component") {
+ 
+        document.getElementById("componentSaving").textContent = saving;
+        document.getElementById("componentTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("componentPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "Failure Analysis") {
+ 
+        document.getElementById("faSaving").textContent = saving;
+        document.getElementById("faTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("faPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "Process") {
+ 
+        document.getElementById("processSaving").textContent = saving;
+        document.getElementById("processTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("processPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "Product") {
+ 
+        document.getElementById("productSaving").textContent = saving;
+        document.getElementById("productTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("productPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "System & Documentation") {
+ 
+        document.getElementById("systemSaving").textContent = saving;
+        document.getElementById("systemTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("systemPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+        if (dept === "Test") {
+ 
+        document.getElementById("testSaving").textContent = saving;
+        document.getElementById("testTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("testPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+
+        if (dept === "Test Development") {
+ 
+        document.getElementById("testDevSaving").textContent = saving;
+        document.getElementById("testDevTarget").textContent = target;
+ 
+        const percentElement =
+            document.getElementById("testDevPercent");
+ 
+        percentElement.querySelector("span").textContent =
+        percent + "%";
+ 
+        percentElement.style.setProperty(
+        "--percent",
+        percent + "%"
+    );
+}
+        
+
+    });
+
+});
+</script>
+<script>
+
+function showDepartment(department,card){
+document.querySelectorAll('.card').forEach(c => {
+    c.classList.remove('active');
+});
+
+card.classList.add('active');
+    let html = "";
+
+    employeeRows.forEach(row => {
+
+        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+        if(!cols || cols.length < 9) return;
+
+        // Skip summary section
+        if(cols[0] === "Sub-Department") return;
+        if(cols[0] === "Department") return;
+
+        // Employee rows
+        if(cols[0].trim() === department){
+
+            html += `
+            <tr>
+                <td>${cols[1]}</td>
+                <td>${cols[2]}</td>
+                <td>${cols[3]}</td>
+                <td>${cols[5].replace(/"/g,'')}</td>
+                <td class="participate">${cols[7]}</td>
+                <td>${cols[8]}</td>
+            </tr>`;
+        }
+
+    });
+
+    document.getElementById("detailTableBody").innerHTML = html;
+}
+</script>
+
+<script>
+
+const cards = document.querySelectorAll('.card');
+
+let currentCard = 0;
+
+// Auto-select first card when dashboard loads
+cards[0].click();
+
+setInterval(() => {
+
+    currentCard++;
+
+    if(currentCard >= cards.length){
+        currentCard = 0;
+    }
+
+    cards[currentCard].click();
+
+}, 300000); // 300,000 ms = 5 minutes
+
+</script>
+<script>
+window.onload = () => {
+
+    setTimeout(() => {
+
+        document.querySelector('.card').click();
+
+    }, 1000);
+
+};
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
